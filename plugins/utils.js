@@ -44,11 +44,20 @@ module.exports.injectCSS = (webContents, filepath) => {
 	});
 };
 
-module.exports.getAllPlugins = () => {
+module.exports.getAllPlugins = (app) => {
 	const isDirectory = source => fs.lstatSync(source).isDirectory();
-	return fs
+
+	const builtIn = fs
 		.readdirSync(__dirname)
 		.map(name => path.join(__dirname, name))
 		.filter(isDirectory)
-		.map(name => path.basename(name));
+	const appPath = path.join(app.getPath('userData'), 'plugins')
+	console.log('YouTube plugins directory is', appPath)
+	let installed = []
+	if (fs.existsSync(appPath)) {
+		installed = fs.readdirSync(appPath)
+		.map(name => path.join(appPath, name))
+		.filter(isDirectory)
+	}
+	return builtIn.concat(installed)
 };

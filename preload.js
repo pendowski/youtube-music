@@ -8,7 +8,7 @@ const { fileExists }               = require("./plugins/utils");
 const plugins = getEnabledPlugins();
 
 plugins.forEach(plugin => {
-	const pluginPath = path.join(__dirname, "plugins", plugin, "actions.js");
+	const pluginPath = path.join(plugin, "actions.js");
 	fileExists(pluginPath, () => {
 		const actions = require(pluginPath).global || {};
 		Object.keys(actions).forEach(actionName => {
@@ -19,7 +19,7 @@ plugins.forEach(plugin => {
 
 document.addEventListener("DOMContentLoaded", () => {
 	plugins.forEach(plugin => {
-		const pluginPath = path.join(__dirname, "plugins", plugin, "front.js");
+		const pluginPath = path.join(plugin, "front.js");
 		fileExists(pluginPath, () => {
 			const run = require(pluginPath);
 			run();

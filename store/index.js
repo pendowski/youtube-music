@@ -1,5 +1,7 @@
 const Store = require("electron-store");
 const plugins = require("./plugins");
+const { getAllPlugins } = require("../plugins/utils");
+const { app } = require("electron");
 
 const store = new Store({
 	defaults: {
@@ -8,9 +10,13 @@ const store = new Store({
 			height: 550
 		},
 		url    : "https://music.youtube.com",
-		plugins: ["navigation", "shortcuts", "adblocker"]
+		plugins: null
 	}
 });
+
+if (store.get('plugins') === null) {
+	store.set('plugins', getAllPlugins(app))
+}
 
 module.exports = {
 	store            : store,

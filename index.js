@@ -67,7 +67,7 @@ function createMainWindow() {
 
 	getEnabledPlugins().forEach(plugin => {
 		console.log("Loaded plugin - " + plugin);
-		const pluginPath = path.join(__dirname, "plugins", plugin, "back.js");
+		const pluginPath = path.join(plugin, "back.js");
 		fileExists(pluginPath, () => {
 			const handle = require(pluginPath);
 			handle(win);
@@ -140,8 +140,8 @@ app.on("activate", () => {
 });
 
 app.on("ready", () => {
-	setApplicationMenu();
 	mainWindow = createMainWindow();
+	setApplicationMenu(mainWindow);
 	if (!is.dev()) {
 		autoUpdater.checkForUpdatesAndNotify();
 		autoUpdater.on("update-available", () => {

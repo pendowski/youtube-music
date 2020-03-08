@@ -2,14 +2,15 @@ const { app, Menu } = require("electron");
 
 const { getAllPlugins }                                = require("./plugins/utils");
 const { isPluginEnabled, enablePlugin, disablePlugin } = require("./store");
+const path = require('path')
 
-module.exports.setApplicationMenu = () => {
+module.exports.setApplicationMenu = (window) => {
 	const menuTemplate = [
 		{
 			label  : "Plugins",
-			submenu: getAllPlugins().map(plugin => {
+			submenu: getAllPlugins(app).map(plugin => {
 				return {
-					label  : plugin,
+					label  : path.basename(plugin),
 					type   : "checkbox",
 					checked: isPluginEnabled(plugin),
 					click  : item => {
@@ -21,6 +22,15 @@ module.exports.setApplicationMenu = () => {
 					}
 				};
 			})
+		},
+		{
+			label: "Develop",
+			submenu: [{
+				label: "Open Dev tools",
+				click: item => {
+					window.toggleDevTools()
+				}
+			}]
 		}
 	];
 

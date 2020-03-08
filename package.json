@@ -39,22 +39,24 @@
 		"release:win": "npm run clean && build --win -p always"
 	},
 	"dependencies": {
-		"ad-block": "^4.1.3",
+		"ad-block": "git://github.com/brave/ad-block.git#3aba8df268ed735b8b6a94961dbe0e4c1cb55767",
+		"bloom-filter-cpp": "1.2.2",
 		"electron-debug": "^2.0.0",
 		"electron-is": "^3.0.0",
 		"electron-localshortcut": "^3.1.0",
 		"electron-store": "^2.0.0",
-		"electron-updater": "^4.0.6"
+		"electron-updater": "^4.0.6",
+		"ws": "^7.2.2"
 	},
 	"devDependencies": {
 		"devtron": "^1.4.0",
-		"electron": "^4.0.8",
+		"electron": "^4.2.12",
 		"electron-builder": "^20.40.2",
 		"electron-devtools-installer": "^2.2.4",
 		"electron-icon-maker": "0.0.4",
 		"electron-rebuild": "^1.8.4",
-		"rimraf": "^2.6.3",
-		"xo": "^0.24.0"
+		"rimraf": "^2.7.1",
+		"xo": "^0.27.2"
 	},
 	"xo": {
 		"envs": [
