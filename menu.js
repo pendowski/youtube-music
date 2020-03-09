@@ -1,8 +1,9 @@
-const { app, Menu } = require("electron");
+const { app, Menu, shell } = require("electron");
 
-const { getAllPlugins }                                = require("./plugins/utils");
+const { getAllPlugins, pluginsDirectory } = require("./plugins/utils");
 const { isPluginEnabled, enablePlugin, disablePlugin } = require("./store");
 const path = require('path')
+const fs = require('fs')
 
 module.exports.setApplicationMenu = (window) => {
 	const menuTemplate = [
@@ -26,9 +27,21 @@ module.exports.setApplicationMenu = (window) => {
 		{
 			label: "Develop",
 			submenu: [{
-				label: "Open Dev tools",
+				label: "Toggle Dev tools",
+				type: "checkbox",
+				checked: window.isDevToolsOpened(),
 				click: item => {
 					window.toggleDevTools()
+				}
+			},
+			{
+				label: "Open plugins folder",
+				click: item => {
+					const pluginPath = pluginsDirectory()
+					if (!fs.existsSync(pluginPath)) {
+						fs.mkdirSync(pluginPath, { recursive: true })
+					}
+					shell.openItem(pluginPath)
 				}
 			}]
 		}

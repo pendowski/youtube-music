@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const { ipcMain, ipcRenderer } = require("electron");
+const { ipcMain, ipcRenderer, app } = require("electron");
 
 // Creates a DOM element from a HTML string
 module.exports.ElementFromHtml = html => {
@@ -44,14 +44,19 @@ module.exports.injectCSS = (webContents, filepath) => {
 	});
 };
 
-module.exports.getAllPlugins = (app) => {
-	const isDirectory = source => fs.lstatSync(source).isDirectory();
+function pluginsDirectory() {
+	return path.join(app.getPath('userData'), 'plugins')
+}
+module.exports.pluginsDirectory = pluginsDirectory
 
+module.exports.getAllPlugins = () => {
+	const isDirectory = source => fs.lstatSync(source).isDirectory();
 	const builtIn = fs
 		.readdirSync(__dirname)
 		.map(name => path.join(__dirname, name))
 		.filter(isDirectory)
-	const appPath = path.join(app.getPath('userData'), 'plugins')
+	
+	const appPath = pluginsDirectory()
 	console.log('YouTube plugins directory is', appPath)
 	let installed = []
 	if (fs.existsSync(appPath)) {
