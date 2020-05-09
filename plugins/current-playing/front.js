@@ -28,14 +28,17 @@ function run() {
     const WebSocket = require("ws")
     const wss = new WebSocket.Server({ port: 6001 })
     wss.on('connection', function (w) {
+        let gotMessage = false
         w.on('message', function (data) {
             if (data != '') {
                 w.send(findCurrentPlaying())
+                if (!gotMessage) {
+                    console.log("Currenty-Playing:", data)
+                }
             }
-            console.log(data)
         })
         w.on('close', function () {
-            console.log("Closed")
+            console.log("Currenty-Playing: Closed")
         })
         w.send(findCurrentPlaying())
     })
