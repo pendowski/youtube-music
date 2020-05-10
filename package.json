@@ -49,7 +49,8 @@
 		"electron-localshortcut": "^3.2.1",
 		"electron-store": "^5.1.1",
 		"electron-updater": "^4.3.0",
-		"node-fetch": "^2.6.0"
+		"node-fetch": "^2.6.0",
+		"ws": "^7.2.5"
 	},
 	"devDependencies": {
 		"bufferutil": "^4.0.1",
