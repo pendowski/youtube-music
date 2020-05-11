@@ -1,5 +1,7 @@
 "use strict";
 const path = require("path");
+const fs = require('fs')
+const YAML = require('yaml')
 
 const electron        = require("electron");
 const is              = require("electron-is");
@@ -142,18 +144,47 @@ app.on("activate", () => {
 app.on("ready", () => {
 	mainWindow = createMainWindow();
 	setApplicationMenu(mainWindow);
+
 	if (!is.dev()) {
 		autoUpdater.checkForUpdatesAndNotify();
-		autoUpdater.on("update-available", () => {
+		autoUpdater.on("update-available", (info) => {
+			console.log('Found new version', info)
+			let appUpdatePath = path.join(process.resourcesPath, 'app-update.yml')
+			if (!fs.existsSync(appUpdatePath)) {
+				return // shouldn't work anyway since updater bases its data on this file
+			}
+			const appUpdate = YAML.parse(fs.readFileSync(appUpdatePath))
+			if (appUpdate.provider != 'github') {
+				console.error('Update provided by an unhandled provider')
+				return // unhandled provider
+			}
+
+			let ignored = store.get('ignored_updates') || []
+			if (ignored.indexOf(info.version) !== -1) {
+				return // should ignore that one
+			}
+
+			const url = `https://github.com/${appUpdate.owner}/${appUpdate.repo}/releases/latest`
 			const dialogOpts = {
 				type   : "info",
-				buttons: ["OK"],
+				buttons: ["Remind me later", "Open page", "Ignore this version"],
 				title  : "Application Update",
 				message: "A new version is available",
 				detail : 
-					"A new version is available and can be downloaded at https://github.com/th-ch/youtube-music/releases/latest"
+					`A new version is available and can be downloaded at ${url}`
 			};
-			electron.dialog.showMessageBox(dialogOpts);
+			const result = electron.dialog.showMessageBox(dialogOpts);
+			switch (result) {
+				case 0:
+					break;
+				case 1:
+					electron.shell.openExternal(url)
+					break;
+				case 2:
+					ignored.push(info.version)
+					store.set('ignored_updates', ignored)
+					break;
+			}
 		});
 	}
 

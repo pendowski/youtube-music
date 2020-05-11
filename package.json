@@ -50,11 +50,18 @@
 		"electron-store": "^5.1.1",
 		"electron-updater": "^4.3.0",
 		"node-fetch": "^2.6.0",
-		"ws": "^7.2.5"
+		"ws": "^7.2.5",
+		"yaml": "^1.8.0"
 	},
 	"devDependencies": {
 		"bufferutil": "^4.0.1",
 		"devtron": "^1.4.0",
+		"electron": "^4.2.12",
+		"electron-builder": "^22.2.0",
+		"electron-devtools-installer": "^2.2.4",
+		"electron-icon-maker": "0.0.4",
+		"electron-rebuild": "^1.8.4",
+		"rimraf": "^2.7.1",
 		"utf-8-validate": "^5.0.2",
 		"electron": "^8.2.1",
 		"electron-builder": "^22.4.1",
